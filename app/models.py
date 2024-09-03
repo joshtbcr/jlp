@@ -3,23 +3,23 @@ from sqlalchemy.orm import relationship
 from app.database import Base
 from datetime import datetime
 
-class Cliente(Base):
-    __tablename__ = "clientes"
+class Usuario(Base):
+    __tablename__ = "usuarios"
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, index=True)
-    id_cliente = Column(String, unique=True, index=True)
+    id_usuario = Column(String, unique=True, index=True)
     contrasena = Column(String)
-    cuentas = relationship("Cuenta", back_populates="cliente")
+    cuentas = relationship("Cuenta", back_populates="usuario")
 
 class Cuenta(Base):
     __tablename__ = "cuentas"
     id = Column(Integer, primary_key=True, index=True)
-    cliente_id = Column(Integer, ForeignKey("clientes.id"))
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"))
     moneda = Column(String)
     balance = Column(Float, default=0.0)
     prestamo_id = Column(Integer, ForeignKey("prestamos.id"))
-    cliente = relationship("Cliente", back_populates="cuentas")
-    movimientos = relationship("Movimiento", back_populates="cuenta")
+    usuario = relationship("Usuario", back_populates="cuentas")
+    movimientos = relationship("Movimiento")
 
 class Prestamo(Base):
     __tablename__ = "prestamos"
@@ -31,7 +31,7 @@ class Prestamo(Base):
     fecha_cargo_interes = Column(DateTime)
     morosidad = Column(Boolean, default=False)
     moneda = Column(String)
-    cuenta = relationship("Cuenta", uselist=False, back_populates="prestamo")
+    # cuenta = relationship("Cuenta", uselist=False, back_populates="prestamo")
 
 class Movimiento(Base):
     __tablename__ = "movimientos"
@@ -42,4 +42,4 @@ class Movimiento(Base):
     detalle = Column(String)
     fecha = Column(DateTime, default=datetime.utcnow)
     blob_url = Column(String, nullable=True)
-    cuenta = relationship("Cuenta", back_populates="movimientos")
+    # cuenta = relationship("Cuenta", back_populates="movimientos")

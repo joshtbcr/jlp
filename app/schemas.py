@@ -46,22 +46,29 @@ class CuentaCreate(CuentaBase):
 class Cuenta(CuentaBase):
     id: int
     balance: float
-    cliente_id: int
+    usuario_id: int
     movimientos: List[Movimiento] = []
 
     class Config:
         orm_mode = True
 
-class ClienteBase(BaseModel):
+class UsuarioBase(BaseModel):
     nombre: str
-    id_cliente: str
+    id_usuario: str
 
-class ClienteCreate(ClienteBase):
+class UsuarioCreate(UsuarioBase):
     contrasena: str
 
-class Cliente(ClienteBase):
+class Usuario(UsuarioBase):
     id: int
     cuentas: List[Cuenta] = []
 
     class Config:
         orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    id_cliente: Optional[str] = None

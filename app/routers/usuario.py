@@ -1,5 +1,5 @@
 from .. import models,schemas, auth
-from app.crud
+from app.crud import usuarioCRUD
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -13,7 +13,7 @@ router = APIRouter(
 def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):
     
 
-    nuevo_usuario = create_usuario(db, usuario)
+    nuevo_usuario = usuarioCRUD.create_usuario(db, usuario)
     print("Usuario creado")
 
     return nuevo_usuario
