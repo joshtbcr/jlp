@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 def get_usuario(db: Session, usuario_id: int):
-    return db.query(models.Usuario).filter(models.Usuario.id == usuario_id).first()
+    return db.query(models.Usuario).filter(models.Usuario.id_usuario == usuario_id).first()
 
 
 

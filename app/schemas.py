@@ -26,12 +26,18 @@ class PrestamoBase(BaseModel):
     moneda: str
 
 class PrestamoCreate(PrestamoBase):
+    dia_cargo_interes: int = 1
+    usuario_id: int
+    pass
+
+class PrestamoInput(PrestamoCreate):
+    usuario_id: int
     pass
 
 class Prestamo(PrestamoBase):
     id: int
-    fecha_inicio: datetime
-    fecha_cargo_interes: datetime
+    fecha_inicio: datetime = None
+    dia_cargo_interes: int
     morosidad: bool
 
     class Config:
@@ -41,7 +47,8 @@ class CuentaBase(BaseModel):
     moneda: str
 
 class CuentaCreate(CuentaBase):
-    prestamo: PrestamoCreate
+    prestamo_id: int
+    balance: float
 
 class Cuenta(CuentaBase):
     id: int
@@ -54,6 +61,7 @@ class Cuenta(CuentaBase):
 
 class UsuarioBase(BaseModel):
     nombre: str
+    permiso: int = 1
     id_usuario: str
 
 class UsuarioCreate(UsuarioBase):

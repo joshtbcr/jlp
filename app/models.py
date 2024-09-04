@@ -10,15 +10,17 @@ class Usuario(Base):
     id_usuario = Column(String, unique=True, index=True)
     contrasena = Column(String)
     cuentas = relationship("Cuenta", back_populates="usuario")
+    permiso = Column(Integer, default=1)
 
 class Cuenta(Base):
     __tablename__ = "cuentas"
     id = Column(Integer, primary_key=True, index=True)
-    usuario_id = Column(Integer, ForeignKey("usuarios.id"))
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"),nullable=False)
     moneda = Column(String)
     balance = Column(Float, default=0.0)
-    prestamo_id = Column(Integer, ForeignKey("prestamos.id"))
+    prestamo_id = Column(Integer, ForeignKey("prestamos.id"), nullable=True)
     usuario = relationship("Usuario", back_populates="cuentas")
+    prestamo = relationship("Prestamo")
     movimientos = relationship("Movimiento")
 
 class Prestamo(Base):
@@ -28,7 +30,7 @@ class Prestamo(Base):
     interes_anual = Column(Float)
     plazo_meses = Column(Integer)
     fecha_inicio = Column(DateTime, default=datetime.utcnow)
-    fecha_cargo_interes = Column(DateTime)
+    dia_cargo_interes = Column(Integer, default=1)
     morosidad = Column(Boolean, default=False)
     moneda = Column(String)
     # cuenta = relationship("Cuenta", uselist=False, back_populates="prestamo")

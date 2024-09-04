@@ -11,6 +11,9 @@ app = FastAPI()
 # Rutas de autenticación
 app.include_router(auth.router)
 app.include_router(usuario.router)
+app.include_router(prestamo.router)
+app.include_router(cuenta.router)
+app.include_router(movimiento.router)
 
 @app.get("/")
 def root():
