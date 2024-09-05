@@ -86,3 +86,18 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id_cliente: Optional[str] = None
+
+class CuentaExcel(CuentaBase):
+    id: int
+    movimientos: List[Movimiento] = []
+    usuario: Usuario
+    prestamo: Prestamo
+
+    class Config:
+        orm_mode = True
+
+
+# Pydantic model for the input data
+class ExcelResponse(BaseModel):
+    filename: str
+    file_content: str  # Base64 encoded content of the file
