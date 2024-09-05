@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
 from datetime import datetime
 from typing import List, Optional
 
@@ -6,6 +6,8 @@ class MovimientoBase(BaseModel):
     tipo: str
     monto: float
     detalle: str
+    cuenta_id: int
+    usuarioRegistrante_id: int
     blob_url: Optional[str] = None
 
 class MovimientoCreate(MovimientoBase):
@@ -13,7 +15,6 @@ class MovimientoCreate(MovimientoBase):
 
 class Movimiento(MovimientoBase):
     id: int
-    cuenta_id: int
     fecha: datetime
 
     class Config:
@@ -45,16 +46,21 @@ class Prestamo(PrestamoBase):
 
 class CuentaBase(BaseModel):
     moneda: str
+    balance: float
+    usuario_id: str | int
+    prestamo_id: int
+    
+    @field_serializer("usuario_id")
+    def serialize_usuario_id(self, usuario_id: str | int, _info):
+        return str(usuario_id)
 
 class CuentaCreate(CuentaBase):
-    prestamo_id: int
-    balance: float
+    pass
 
 class Cuenta(CuentaBase):
     id: int
-    balance: float
-    usuario_id: int
     movimientos: List[Movimiento] = []
+    prestamo: Prestamo
 
     class Config:
         orm_mode = True

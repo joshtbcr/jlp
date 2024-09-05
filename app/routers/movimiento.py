@@ -1,3 +1,4 @@
+from typing import List
 from .. import models,schemas, auth
 from app.crud import movimientoCRUD
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
@@ -18,10 +19,10 @@ def create_movimiento(movimientoACrear: schemas.MovimientoCreate, db: Session = 
     return nuevo_movimiento
 
 
-@router.get("/",response_model=schemas.Movimiento)
+@router.get("/",response_model=List[schemas.Movimiento])
 def get_movimiento(db: Session = Depends(get_db)):
     
-    movimientos = movimientoCRUD.get(db)
+    movimientos = movimientoCRUD.get_movimientos(db)
 
     if not movimientos:
         raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,

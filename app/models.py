@@ -33,13 +33,15 @@ class Prestamo(Base):
     dia_cargo_interes = Column(Integer, default=1)
     morosidad = Column(Boolean, default=False)
     moneda = Column(String)
-    # cuenta = relationship("Cuenta", uselist=False, back_populates="prestamo")
+    cuenta = relationship("Cuenta", uselist=False, back_populates="prestamo")
 
 class Movimiento(Base):
     __tablename__ = "movimientos"
     id = Column(Integer, primary_key=True, index=True)
     cuenta_id = Column(Integer, ForeignKey("cuentas.id"))
     tipo = Column(String)
+    usuarioRegistrante_id = Column(Integer, ForeignKey("usuarios.id"),nullable=False)
+    usuarioRegistrante = relationship("Usuario")
     monto = Column(Float)
     detalle = Column(String)
     fecha = Column(DateTime, default=datetime.utcnow)

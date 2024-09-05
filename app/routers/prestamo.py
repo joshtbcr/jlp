@@ -31,7 +31,7 @@ def create_prestamo(prestamoACrear: schemas.PrestamoCreate, db: Session = Depend
 def get_prestamos(db: Session = Depends(get_db)):
     
     prestamos = prestamoCRUD.get_prestamo(db,usuario_id=1)
-    print(f"==>> prestamos: {prestamos}")
+    # print(f"==>> prestamos: {prestamos}")
     
     if not prestamos:
         raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,

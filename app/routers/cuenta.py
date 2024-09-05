@@ -29,7 +29,10 @@ def create_cuenta(cuentaACrear: schemas.CuentaCreate, db: Session = Depends(get_
 @router.get("/",response_model=List[schemas.Cuenta])
 def get_cuentas(db: Session = Depends(get_db),
                 id_usuario: Optional[str] = ""):
+
+
     cuentas_existentes = cuentaCRUD.get_cuentas(db, id_usuario)
+    print(f"==>> cuentas_existentes: {cuentas_existentes}")
 
     if not cuentas_existentes:
         raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,
