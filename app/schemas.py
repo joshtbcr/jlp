@@ -101,3 +101,11 @@ class CuentaExcel(CuentaBase):
 class ExcelResponse(BaseModel):
     filename: str
     file_content: str  # Base64 encoded content of the file
+
+class MovimientoExcel(MovimientoBase):
+    id: int
+    fecha: datetime
+    usuarioRegistrante_id: Usuario
+
+    class Config:
+        orm_mode = True

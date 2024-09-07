@@ -18,6 +18,5 @@ def get_movimientos(db: Session, usuario_id: int = 1):
 
     movimientos = db.query(models.Movimiento).all()
     print(f"==>> movimientos: {movimientos}")
-
     return movimientos
 
