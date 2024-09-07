@@ -10,7 +10,7 @@ from typing import List, Optional
 import io
 import pandas
 import openpyxl
-from openpyxl.styles import PatternFill
+from openpyxl.styles import PatternFill,Font, Alignment
 import base64
 
 router = APIRouter(
@@ -48,7 +48,7 @@ def get_cuentas(db: Session = Depends(get_db),
     
     return cuentas_existentes
 
-
+''' 
 @router.get("/generate-excel/",response_model=schemas.ExcelResponse)
 def get_cuentas(db: Session = Depends(get_db),
                 id_usuario: Optional[str] = ""):
@@ -91,7 +91,7 @@ def get_cuentas(db: Session = Depends(get_db),
     return StreamingResponse(output, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers, as_attachment=True)
     
 ''' 
-@router.get("/generate-excel/",response_model=schemas.ExcelData)
+@router.get("/generate-excel/")
 def get_cuentas(db: Session = Depends(get_db),
                 id_usuario: Optional[str] = ""):
 
@@ -101,24 +101,68 @@ def get_cuentas(db: Session = Depends(get_db),
     if not cuentas_existentes:
         raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"No hay cuentas existentes.")
-    
 
-    df = pandas.DataFrame({
-        "Name": ["Josh"],
-        "Age": ["30"],
-        "Occupation": ["Engineer"]
-    })
-    nombreSheet = "Estado de Cuenta - Prestamo"
-    nombreArchivo = "EstadoDeCuenta.xlsx"
+    return get_Excel(db)
+
+
+def get_Excel(db: Session = Depends(get_db)):
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Estado de Cuenta"
+
+    # Nombre de tu empresa
+    company_name = "Josh Le Presta"  # Nombre de tu empresa
     
-    # Save the DataFrame to an Excel file in memory
+    # Añadir título del documento (Nombre de la empresa y nombre del cliente)
+    ws.merge_cells('A1:E1')
+    ws['A1'] = f"Estado de Cuenta - {company_name}"
+    ws['A1'].font = Font(bold=True, size=14)
+    ws['A1'].alignment = Alignment(horizontal="center")
+    
+    ws.merge_cells('A2:E2')
+    ws['A2'] = f"Cliente: Jane"
+    ws['A2'].font = Font(bold=True, size=12)
+    ws['A2'].alignment = Alignment(horizontal="center")
+
+    # Definir el color de la cabecera
+    header_fill = PatternFill(start_color="00CCFF99", end_color="00CCFF99", fill_type="solid")  # Verde claro
+    header_font = Font(bold=True, color="FFFFFF")  # Blanco para el texto
+
+    # Añadir las cabeceras con fondo verde
+    headers = ["Fecha", "Tipo","Detalle", "Monto", "Balance", "Realizado por"]
+    ws.append(headers)
+
+    for col in range(1, len(headers) + 1):
+        cell = ws.cell(row=4, column=col)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(horizontal="center", vertical="center")
+
+    # Establecer el ancho de las columnas
+    ws.column_dimensions['A'].width = 28  # Columna para Fecha
+    ws.column_dimensions['B'].width = 28  # Columna para Detalle
+
+    # Agregar movimientos a la tabla
+    movimientos = [{"date": "2024-09-06","tipo":"Crédito", "detail": "Pago préstamo", "amount": -100, "balance": 900, "usuario":"Jane Berrocal"}]
+    for movement in movimientos:
+        ws.append([
+            movement["date"],
+            movement["tipo"],
+            movement["detail"],
+            movement["amount"],
+            movement["balance"],
+            movement["usuario"]
+        ])
+
+    # Guardar el archivo en memoria
     output = io.BytesIO()
-    with pandas.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name=f'{nombreSheet}')
-    
+    wb.save(output)
     output.seek(0)
+
+    # Enviar el archivo Excel como respuesta para descargar
     headers = {
-        'Content-Disposition': f'attachment; filename="{nombreArchivo}"'
+        'Content-Disposition': 'attachment; filename="estado_de_cuenta.xlsx"'
     }
+    
     return StreamingResponse(output, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
-''' 
