@@ -30,7 +30,7 @@ def create_prestamo(prestamoACrear: schemas.PrestamoCreate, db: Session = Depend
 @router.get("/",response_model=List[schemas.Prestamo])
 def get_prestamos(db: Session = Depends(get_db)):
     
-    prestamos = prestamoCRUD.get_prestamo(db,usuario_id=1)
+    prestamos = prestamoCRUD.get_prestamo(db,usuario_cedula=1)
     # print(f"==>> prestamos: {prestamos}")
     
     if not prestamos:

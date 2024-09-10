@@ -3,8 +3,8 @@ from app import models, schemas, auth
 from datetime import datetime
 
 
-def get_usuario(db: Session, usuario_id: int):
-    return db.query(models.Usuario).filter(models.Usuario.id_usuario == usuario_id).first()
+def get_usuario(db: Session, cedula: int):
+    return db.query(models.Usuario).filter(models.Usuario.cedula == cedula).first()
 
 
 

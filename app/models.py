@@ -7,7 +7,7 @@ class Usuario(Base):
     __tablename__ = "usuarios"
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, index=True)
-    id_usuario = Column(String, unique=True, index=True)
+    cedula = Column(String, unique=True, index=True)
     contrasena = Column(String)
     cuentas = relationship("Cuenta", back_populates="usuario")
     permiso = Column(Integer, default=1)
@@ -15,7 +15,7 @@ class Usuario(Base):
 class Cuenta(Base):
     __tablename__ = "cuentas"
     id = Column(Integer, primary_key=True, index=True)
-    usuario_id = Column(Integer, ForeignKey("usuarios.id"),nullable=False)
+    usuario_cedula = Column(String, ForeignKey("usuarios.cedula"),nullable=False)
     moneda = Column(String)
     balance = Column(Float, default=0.0)
     prestamo_id = Column(Integer, ForeignKey("prestamos.id"), nullable=True)
@@ -40,7 +40,7 @@ class Movimiento(Base):
     id = Column(Integer, primary_key=True, index=True)
     cuenta_id = Column(Integer, ForeignKey("cuentas.id"))
     tipo = Column(String)
-    usuarioRegistrante_id = Column(Integer, ForeignKey("usuarios.id"),nullable=False)
+    usuarioRegistrante_cedula = Column(String, ForeignKey("usuarios.cedula"),nullable=False)
     usuarioRegistrante = relationship("Usuario")
     monto = Column(Float)
     detalle = Column(String)

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_serializer
+from pydantic import BaseModel, ConfigDict, field_serializer
 from datetime import datetime
 from typing import List, Optional
 
@@ -7,7 +7,7 @@ class MovimientoBase(BaseModel):
     monto: float
     detalle: str
     cuenta_id: int
-    usuarioRegistrante_id: int
+    usuarioRegistrante_cedula: str
     blob_url: Optional[str] = None
 
 class MovimientoCreate(MovimientoBase):
@@ -17,8 +17,7 @@ class Movimiento(MovimientoBase):
     id: int
     fecha: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class PrestamoBase(BaseModel):
     monto: float
@@ -28,11 +27,11 @@ class PrestamoBase(BaseModel):
 
 class PrestamoCreate(PrestamoBase):
     dia_cargo_interes: int = 1
-    usuario_id: int
+    usuario_cedula: str
     pass
 
 class PrestamoInput(PrestamoCreate):
-    usuario_id: int
+    usuario_cedula: str
     pass
 
 class Prestamo(PrestamoBase):
@@ -41,18 +40,17 @@ class Prestamo(PrestamoBase):
     dia_cargo_interes: int
     morosidad: bool
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class CuentaBase(BaseModel):
     moneda: str
     balance: float
-    usuario_id: str | int
+    usuario_cedula: str | int
     prestamo_id: int
     
-    @field_serializer("usuario_id")
-    def serialize_usuario_id(self, usuario_id: str | int, _info):
-        return str(usuario_id)
+    @field_serializer("usuario_cedula")
+    def serialize_usuario_cedula(self, usuario_cedula: str | int, _info):
+        return str(usuario_cedula)
 
 class CuentaCreate(CuentaBase):
     pass
@@ -61,14 +59,12 @@ class Cuenta(CuentaBase):
     id: int
     movimientos: List[Movimiento] = []
     prestamo: Prestamo
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class UsuarioBase(BaseModel):
     nombre: str
     permiso: int = 1
-    id_usuario: str
+    cedula: str
 
 class UsuarioCreate(UsuarioBase):
     contrasena: str
@@ -76,9 +72,7 @@ class UsuarioCreate(UsuarioBase):
 class Usuario(UsuarioBase):
     id: int
     cuentas: List[Cuenta] = []
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class Token(BaseModel):
     access_token: str
@@ -92,9 +86,9 @@ class CuentaExcel(CuentaBase):
     movimientos: List[Movimiento] = []
     usuario: Usuario
     prestamo: Prestamo
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        orm_mode = True
+
 
 
 # Pydantic model for the input data
@@ -106,6 +100,6 @@ class MovimientoExcel(MovimientoBase):
     id: int
     fecha: datetime
     usuarioRegistrante_id: Usuario
+    balance: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

@@ -14,7 +14,7 @@ def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)
     
     ## Permiso 0 = admin
     ## Permiso 1 = normal
-    usuarioExistente = usuarioCRUD.get_usuario(db, usuario.id_usuario)
+    usuarioExistente = usuarioCRUD.get_usuario(db, usuario.cedula)
     if usuarioExistente is not None:
         print(f"Usuario ya existe: {usuarioExistente}")
         raise HTTPException (status_code=status.HTTP_409_CONFLICT,
@@ -26,22 +26,22 @@ def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)
     return nuevo_usuario
 
 
-@router.get("/{id_usuario}",response_model=schemas.Usuario)
-def get_usuario(id_usuario:str, db: Session = Depends(get_db)):
-    usuarioExistente = usuarioCRUD.get_usuario(db, id_usuario)
+@router.get("/{cedula}",response_model=schemas.Usuario)
+def get_usuario(cedula:str, db: Session = Depends(get_db)):
+    usuarioExistente = usuarioCRUD.get_usuario(db, cedula)
 
     if not usuarioExistente:
         raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Usuario con id {id_usuario} no fue encontrado.")
+                            detail=f"Usuario con cedula {cedula} no fue encontrado.")
     
     return usuarioExistente
 
-@router.get("/{id_usuario}",response_model=schemas.Usuario)
-def get_usuario(id_usuario:int, db: Session = Depends(get_db)):
-    usuario = db.query(models.usuario).filter(models.usuario.id ==id).first()
+@router.get("/{cedula}",response_model=schemas.Usuario)
+def get_usuario(cedula:int, db: Session = Depends(get_db)):
+    usuario = db.query(models.usuario).filter(models.usuario.cedula ==cedula).first()
 
     if not usuario:
         raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"usuario with id {id} was not found.")
+                            detail=f"usuario with cedula {cedula} was not found.")
     
     return usuario

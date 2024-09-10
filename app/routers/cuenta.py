@@ -1,4 +1,3 @@
-
 from .. import models,schemas, auth
 from app.crud import cuentaCRUD
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
@@ -7,6 +6,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from typing import List, Optional
 import io
+from app.config import settings
 
 router = APIRouter(
     prefix='/cuentas',
@@ -43,10 +43,10 @@ def get_cuentas(db: Session = Depends(get_db),
     
     return cuentas_existentes
 
-@router.get("/generate-excel/")
+@router.get("/generar-excel/")
 def get_cuentas(db: Session = Depends(get_db),
-                id_usuario: str = ""):
-    if id_usuario =="":
+                cedula: str = ""):
+    if cedula =="":
             raise HTTPException (status_code=status.HTTP_400_BAD_REQUEST,
                             detail=f"Necesita ID de usuario.")
     
@@ -59,10 +59,12 @@ def get_cuentas(db: Session = Depends(get_db),
     #                         detail=f"No hay cuentas existentes.")
 
     output = io.BytesIO()
-    output = cuentaCRUD.get_Excel(db, output, id_usuario)
+    output = cuentaCRUD.get_Excel(db, output, cedula)
+
+    
 
     headers = {
-        'Content-Disposition': 'attachment; filename="estado_de_cuenta.xlsx"'
+        'Content-Disposition': f'attachment; filename="{settings.NOMBRE_ARCHIVO_CUENTA_EXCEL}.xlsx"'
     }
     
     return StreamingResponse(output, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)

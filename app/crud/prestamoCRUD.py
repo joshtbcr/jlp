@@ -6,19 +6,19 @@ from datetime import datetime
 
 def create_prestamo(db: Session, prestamo: schemas.PrestamoCreate):
 
-    db_prestamo = models.Prestamo(**prestamo.dict(exclude={'usuario_id'}))
+    db_prestamo = models.Prestamo(**prestamo.dict(exclude={'usuario_cedula'}))
     db.add(db_prestamo)
     db.commit()
     
     db.refresh(db_prestamo)
 
     #crear cuenta
-    nuevaCuenta = cuentaCRUD.create_cuenta(db, db_prestamo, prestamo.usuario_id)
+    nuevaCuenta = cuentaCRUD.create_cuenta(db, db_prestamo, prestamo.usuario_cedula)
     
     return db_prestamo
 
 
-def get_prestamo(db: Session, usuario_id: int = 1):
+def get_prestamo(db: Session, usuario_cedula: int = 1):
     # return db.query(models.Usuario).filter(models.Usuario.id_usuario == usuario_id).all()
     return db.query(models.Prestamo).all()
 
