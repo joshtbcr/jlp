@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Frontend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Josh Le Presta</h1>
+        <input type="text" id="inputData" placeholder="Ingresar número de cédula" />
+        <button onclick="sendData()">Descargar estado de cuenta</button>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        // Store the backend URL in a variable
+        const url = "http://127.0.0.1:8000/"
+        const excelURL = url + "cuentas/generate-excel/?cedula=";
+
+        async function sendData() {
+            const inputData = document.getElementById("inputData").value;
+
+            try {
+                const response = await fetch(excelURL+inputData, {
+                    method: "GET",
+                    // method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    // body: JSON.stringify({ data: inputData }),
+                });
+
+                // const result = await response.json();
+                // document.getElementById("output").innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("output").innerText = "Error: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

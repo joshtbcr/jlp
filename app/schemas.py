@@ -10,6 +10,8 @@ class MovimientoBase(BaseModel):
     usuarioRegistrante_cedula: str
     blob_url: Optional[str] = None
 
+    model_config = ConfigDict(from_attributes=True, extra="allow")
+
 class MovimientoCreate(MovimientoBase):
     pass
 
@@ -81,13 +83,6 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     id_cliente: Optional[str] = None
 
-class CuentaExcel(CuentaBase):
-    id: int
-    movimientos: List[Movimiento] = []
-    usuario: Usuario
-    prestamo: Prestamo
-    model_config = ConfigDict(from_attributes=True)
-
 
 
 
@@ -102,4 +97,11 @@ class MovimientoExcel(MovimientoBase):
     usuarioRegistrante_id: Usuario
     balance: int
 
+    model_config = ConfigDict(from_attributes=True, extra="allow")
+
+class CuentaExcel(CuentaBase):
+    id: int
+    movimientos: List[MovimientoExcel] = []
+    usuario: Usuario
+    prestamo: Prestamo
     model_config = ConfigDict(from_attributes=True)
