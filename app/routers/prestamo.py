@@ -1,5 +1,7 @@
 from typing import List
-from .. import models,schemas, auth
+
+from . import auth
+from .. import models,schemas
 from app.crud import prestamoCRUD, usuarioCRUD
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session

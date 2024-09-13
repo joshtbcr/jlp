@@ -1,4 +1,5 @@
-from .. import models,schemas, auth
+from . import auth
+from .. import models,schemas
 from app.crud import cuentaCRUD
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from fastapi.responses import StreamingResponse

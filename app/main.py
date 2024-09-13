@@ -1,5 +1,6 @@
 from fastapi import FastAPI #, Depends
-from app import models,auth #, crud,  database
+from app import models
+from app.routers import auth #, crud,  database
 from .routers import usuario, cuenta, movimiento, prestamo
 from app.database import engine
 # from app.dependencies import get_db

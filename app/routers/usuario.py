@@ -1,4 +1,5 @@
-from .. import models,schemas, auth
+from . import auth
+from .. import models,schemas
 from app.crud import usuarioCRUD
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
@@ -25,8 +26,18 @@ def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)
 
     return nuevo_usuario
 
-
 @router.get("/{cedula}",response_model=schemas.Usuario)
+def get_usuario(cedula:str | None = None, db: Session = Depends(get_db)):
+    usuario = usuarioCRUD.get_usuario(db, cedula)
+
+    if not usuario:
+        raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Usuario con cedula {cedula} no fue encontrado.")
+    
+    return usuario
+
+
+@router.get("/",response_model=schemas.Usuario)
 def get_usuario(cedula:str, db: Session = Depends(get_db)):
     usuarioExistente = usuarioCRUD.get_usuario(db, cedula)
 
@@ -35,13 +46,3 @@ def get_usuario(cedula:str, db: Session = Depends(get_db)):
                             detail=f"Usuario con cedula {cedula} no fue encontrado.")
     
     return usuarioExistente
-
-@router.get("/{cedula}",response_model=schemas.Usuario)
-def get_usuario(cedula:int, db: Session = Depends(get_db)):
-    usuario = db.query(models.usuario).filter(models.usuario.cedula ==cedula).first()
-
-    if not usuario:
-        raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"usuario with cedula {cedula} was not found.")
-    
-    return usuario

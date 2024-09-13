@@ -27,8 +27,8 @@ def verify_password(plain_password, hashed_password):
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-def authenticate_user(db: Session, id_usuario: str, password: str):
-    user = db.query(models.Usuario).filter(models.Usuario.id_usuario == id_usuario).first()
+def authenticate_user(db: Session, cedula: str, password: str):
+    user = db.query(models.Usuario).filter(models.Usuario.cedula == cedula).first()
     if not user:
         return False
     if not verify_password(password, user.contrasena):
@@ -40,7 +40,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.utcnow() + timedelta(minutes=60)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -52,11 +52,11 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Usuario o contraseña incorrecta.",
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"sub": user.id_usuario}, expires_delta=access_token_expires)
+    access_token = create_access_token(data={"sub": user.cedula}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
 def hash(password:str):
