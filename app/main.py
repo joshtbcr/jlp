@@ -21,7 +21,7 @@ app.include_router(movimiento.router)
 
 origins = [
     "http://localhost.tiangolo.com",
-    "https://orange-mud-0d3cbdd0f.5.azurestaticapps.net/", #predev2
+    "https://orange-mud-0d3cbdd0f.5.azurestaticapps.net", #predev2
     "http://localhost",
     "http://localhost:8080",
 ]
