@@ -20,8 +20,9 @@ app.include_router(cuenta.router)
 app.include_router(movimiento.router)
 
 origins = [
-    "http://localhost.tiangolo.com",
+    "file:///C:/Users/jotorres/Repos/jlp-load-beforenpm/jlp/frontend/index.html",
     "https://orange-mud-0d3cbdd0f.5.azurestaticapps.net", #predev2
+    "null", # Don't leave in prod,  just to allow local files as origins
     "http://localhost",
     "http://localhost:8080",
 ]
