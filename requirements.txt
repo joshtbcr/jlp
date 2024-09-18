@@ -7,3 +7,9 @@ pydantic
 python-jose
 passlib[bcrypt]
 python-dotenv
+pydantic-settings
+python-multipart
+sqlalchemy-utils
+pandas
+xlsxwriter
+openpyxl
