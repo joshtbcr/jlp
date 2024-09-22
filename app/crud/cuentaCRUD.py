@@ -8,7 +8,7 @@ import openpyxl.writer.excel
 import io
 import openpyxl
 from openpyxl.styles import PatternFill,Font, Alignment
-from .. import constant 
+from .. import constant, dependencies
 
 def create_cuenta(db: Session, prestamo: schemas.Prestamo, cedula: str):
     
@@ -53,17 +53,23 @@ def get_cuentaExcel(db: Session, usuario_cedula):
     #TODO
     permiso_usuario = 0
 
-    print(f"==>>Obteniendo todas las cuentas del usuario: {usuario_cedula}")
+    print(f"==>>Obteniendo todas la primer cuenta del usuario: {usuario_cedula}")
     cuenta: schemas.CuentaExcel = db.query(models.Cuenta).filter(models.Cuenta.usuario_cedula == usuario_cedula).first()
 
     cuenta = calcularBalanceParaCadaMovimiento(cuenta)
 
     return cuenta   
 
+def cambiar(movimiento):
+    
+
+    pass
 
 def calcularBalanceParaCadaMovimiento(cuenta:schemas.CuentaExcel):
     balance = cuenta.prestamo.monto
     for index, mov in enumerate(cuenta.movimientos):
+        cuenta.movimientos[index].fecha = dependencies.cambiarFechaALocal(mov.fecha)
+        print(f"==>> cuenta.movimientos[index].fecha: {cuenta.movimientos[index].fecha}")
         if(mov.tipo==constant.MOVIMIENTOS_PAGO):
             balance = balance - mov.monto
             cuenta.movimientos[index].balance = balance
@@ -72,8 +78,6 @@ def calcularBalanceParaCadaMovimiento(cuenta:schemas.CuentaExcel):
             cuenta.movimientos[index].balance = balance
     
     return cuenta
-
-
 
 def get_Excel(db: Session, output, usuario_cedula):
 
@@ -131,11 +135,11 @@ def get_Excel(db: Session, output, usuario_cedula):
 
     # Establecer el ancho de las columnas
     ws.column_dimensions['A'].width = 20  # Columna para Fecha
-    ws.column_dimensions['B'].width = 16  # Columna para Detalle
+    ws.column_dimensions['B'].width = 16  # Columna para Tipo
     ws.column_dimensions['C'].width = 30  # Columna para Detalle
-    ws.column_dimensions['D'].width = 16  # Columna para Detalle
-    ws.column_dimensions['E'].width = 16  # Columna para Detalle
-    ws.column_dimensions['F'].width = 20  # Columna para Detalle
+    ws.column_dimensions['D'].width = 16  # Columna para Monto
+    ws.column_dimensions['E'].width = 16  # Columna para Balance
+    ws.column_dimensions['F'].width = 20  # Columna para Realizado por
 
     moneda_simbolo="₡"
     if(cuenta.prestamo.moneda==constant.MONEDA_DOLARES):

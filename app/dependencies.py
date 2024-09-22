@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from app import models, crud
 from app.database import get_db
 from app.config import settings
+from zoneinfo import ZoneInfo
+from . import constant
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -30,3 +32,9 @@ def get_current_active_user(current_user: models.Usuario = Depends(get_current_u
     if not current_user.is_active:
         raise HTTPException(status_code=400, detail="Usuario inactivo")
     return current_user
+
+def cambiarFechaALocal(fechaNaive):
+    localFormat = "%Y-%m-%d %H:%M:%S"
+    fechaUTC = fechaNaive.replace(tzinfo=ZoneInfo("UTC"))
+    fechaLocal = fechaUTC.astimezone(ZoneInfo(constant.TIMEZONE))
+    return fechaLocal.strftime(localFormat)
