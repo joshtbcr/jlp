@@ -10,6 +10,9 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+    paths:
+      - frontend/**
+      - .github/workflows/dev-deploy-StaticWebApp.yml
 
 jobs:
   build_and_deploy_job:
