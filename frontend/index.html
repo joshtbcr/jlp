@@ -35,11 +35,14 @@
     </div>
 
     <script>
+        
         // Store the backend URL in a variable
         const url = "http://127.0.0.1:8000/"
         const excelURL = url + "cuentas/generar-excel/?cedula=";
-
+        
         async function sendData() {
+            // Trigger the function
+            promptForCredentials();
             const inputData = document.getElementById("inputData").value;
 
             try {
@@ -66,7 +69,23 @@
                 console.error("Error:", error);
                 document.getElementById("output").innerText = "Error: " + error.message;
             }
+
+            // Function to prompt user for credentials
+
+
+
         }
+
+        function promptForCredentials() {
+                const password = window.prompt("Ingresar contraseña:");
+
+                if (username && password) {
+                    console.log("Password:", password);
+                    // Proceed with authentication logic
+                } else {
+                    console.log("Credentials were not entered.");
+                }
+            }
     </script>
 </body>
 </html>
