@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status, APIRouter
+from fastapi import Depends, HTTPException, Response, status, APIRouter
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -47,7 +47,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 
 # Ruta para obtener token
 @router.post("/token", response_model=schemas.Token)
-def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -57,6 +57,7 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"sub": user.cedula}, expires_delta=access_token_expires)
+    response.set_cookie(key="jwt_token", value=access_token, httponly=True, samesite="strict")
     return {"access_token": access_token, "token_type": "bearer"}
 
 def hash(password:str):
