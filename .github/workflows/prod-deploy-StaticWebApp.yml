@@ -29,12 +29,14 @@ jobs:
           lfs: false
       - name: Load environment variables from .env
         run: |
-          source cicd.env
-          echo "PROD_URL=$PROD_URL" >> $GITHUB_ENV          
+            source cicd.env
+            echo "PROD_URL=$PROD_URL" >> $GITHUB_ENV          
         
       - name: Set production URL in HTML file
         run: |
-          sed -i 's|127.0.0.1|${{ env.PROD_URL }}|g' frontend\index.js
+          sed -i 's|127.0.0.1|$PROD_URL|g' frontend/index.js
+        env:
+          PROD_URL: ${{ env.PROD_URL }}
   
       - name: Verify HTML modification
         run: cat frontend\index.js
