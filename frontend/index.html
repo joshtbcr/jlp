@@ -29,67 +29,11 @@
 <body>
     <div class="container">
         <h1>Josh Le Presta</h1>
-        <input type="text" id="inputData" placeholder="Ingresar número de cédula" />
+        <input type="text" id="cedulaInput" placeholder="Ingresar número de cédula" />
         <button onclick="sendData()">Descargar estado de cuenta</button>
         <div id="output"></div>
     </div>
 
-    <script>
-        
-        function revisarCookie(){
-            
-        }
-
-        // Store the backend URL in a variable
-        const url = "http://127.0.0.1:8000/"
-        const excelURL = url + "cuentas/generar-excel/?cedula=";
-        
-        async function sendData() {
-            // Trigger the function
-            promptForCredentials();
-            const inputData = document.getElementById("inputData").value;
-
-            try {
-                fetch(excelURL+inputData, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    }
-                })
-                .then(resp => resp.blob())
-                .then(blob => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement("a");
-                    a.href = url;
-                    a.download = "estado_de_cuenta.xlsx";
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                });
-                // URL.revokeObjectURL(url);
-                // const result = await response.json();
-                // document.getElementById("output").innerText = JSON.stringify(result, null, 2);
-            } catch (error) {
-                console.error("Error:", error);
-                document.getElementById("output").innerText = "Error: " + error.message;
-            }
-
-            // Function to prompt user for credentials
-
-
-
-        }
-
-        function promptForCredentials() {
-                const password = window.prompt("Ingresar contraseña:");
-
-                if (username && password) {
-                    console.log("Password:", password);
-                    // Proceed with authentication logic
-                } else {
-                    console.log("Credentials were not entered.");
-                }
-            }
-    </script>
+    <script src="index.js"></script>
 </body>
 </html>

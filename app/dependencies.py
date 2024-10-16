@@ -38,3 +38,4 @@ def cambiarFechaALocal(fechaNaive):
     fechaUTC = fechaNaive.replace(tzinfo=ZoneInfo("UTC"))
     fechaLocal = fechaUTC.astimezone(ZoneInfo(constant.TIMEZONE))
     return fechaLocal.strftime(localFormat)
+
