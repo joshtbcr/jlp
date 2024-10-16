@@ -34,7 +34,7 @@ jobs:
         
       - name: Set production URL in HTML file
         run: |
-          sed -i 's|127.0.0.1|$PROD_URL|g' frontend/index.js
+          sed -i 's|127.0.0.1|$PROD_URL|g' ./frontend/index.js
         env:
           PROD_URL: ${{ env.PROD_URL }}
     
