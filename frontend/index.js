@@ -87,7 +87,7 @@ async function getJwtToken(cedula,password) {
             throw new Error('Login failed');
         }
         const data = await response.json();
-        const token = data.token;
+        const token = data.access_token;
         console.log('JWT Token:', token);
 
         return token; // Return the token
