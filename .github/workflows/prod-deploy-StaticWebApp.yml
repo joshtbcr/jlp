@@ -37,11 +37,12 @@ jobs:
           sed -i 's|127.0.0.1|$PROD_URL|g' ./frontend/index.js
         env:
           PROD_URL: ${{ env.PROD_URL }}
-    
+      - name: Change directory
+        run: cd frontend
       - name: View files
         run: ls -lh
       - name: Verify HTML modification
-        run: cat frontend\index.js
+        run: cat index.js
 
       - name: Build And Deploy
         id: builddeploy
