@@ -38,11 +38,11 @@ jobs:
         env:
           PROD_URL: ${{ env.PROD_URL }}
       - name: Change directory
-        run: cd frontend
-      - name: View files
-        run: ls -lh
-      - name: Verify HTML modification
-        run: cat index.js
+        run: |
+          cd frontend
+          ls -lh
+          cat index.js
+      # - name: Verify HTML modification
 
       - name: Build And Deploy
         id: builddeploy
