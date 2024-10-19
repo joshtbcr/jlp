@@ -25,6 +25,10 @@ origins = [
     "null", # Don't leave in prod,  just to allow local files as origins
     "http://localhost",
     "http://localhost:8080",
+    "https://dev.joshlepresta.com",
+    "https://joshlepresta.com",
+    "https://www.joshlepresta.com",
+    "https://64d0-170-246-157-55.ngrok-free.app"
 ]
 
 app.add_middleware(

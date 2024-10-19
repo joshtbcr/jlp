@@ -5,7 +5,11 @@ const excelURL = url + estadoCuentaPath;
 
 
 
-
+function search(ele) {
+    if(event.key === 'Enter') {
+        sendData();        
+    }
+}
 
 async function sendData() {
     const cedulaInput = document.getElementById("cedulaInput").value;
