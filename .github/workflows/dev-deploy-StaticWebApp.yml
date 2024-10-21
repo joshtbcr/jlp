@@ -9,17 +9,9 @@ on:
     paths:
       - frontend/**
       - .github/workflows/dev-deploy-StaticWebApp.yml
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
-    paths:
-      - frontend/**
-      - .github/workflows/dev-deploy-StaticWebApp.yml
-
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    ###if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
