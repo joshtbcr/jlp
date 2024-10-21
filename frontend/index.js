@@ -1,6 +1,6 @@
 
 const estadoCuentaPath = "/cuentas/generar-excel/?cedula=";
-const url = "http://127.0.0.1:8000"
+const url = "https://local-dev-api.joshlepresta.com:8000"
 const excelURL = url + estadoCuentaPath;
 
 
@@ -50,9 +50,11 @@ function getCookie(name) {
 async function hayTokenValido(cedulaInput){
     const token = getCookie('jwt_token');
     if ((token === undefined || token === null)) {
+        console.log("token: NO HAY TOKEN");
         var passwordInput = promptForPassword();
         if(!passwordInput) return;
         await getJwtToken(cedulaInput, passwordInput);
+        return hayTokenValido(cedulaInput);
     }
     else{
         

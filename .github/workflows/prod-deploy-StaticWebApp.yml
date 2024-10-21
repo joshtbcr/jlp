@@ -28,21 +28,16 @@ jobs:
           submodules: true
           lfs: false
           
-      - name: Load environment variables from .env
+      - name: Load environment variables from .env, Change URL and read change
         run: |
           source cicd.env
           echo "API_PROD_URL=$API_PROD_URL" >> $GITHUB_ENV          
-        
-      - name: Set production URL in .js file
-        run: |
           sed -i 's|http://127.0.0.1|https://'"$API_PROD_URL"'|g' ./frontend/index.js
-        env:
-          API_PROD_URL: ${{ env.API_PROD_URL }}
-      - name: Read change
-        run: |
           cd frontend
           ls -lh
           cat index.js
+        env:
+          API_PROD_URL: ${{ env.API_PROD_URL }}
 
       - name: Build And Deploy
         id: builddeploy
