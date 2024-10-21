@@ -59,11 +59,14 @@ def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestFo
     access_token = create_access_token(data={"sub": user.cedula}, expires_delta=access_token_expires)
     devdomain = "dev.joshlepresta.com"
     domainAPI = "127.0.0.1:8000"
-    response.set_cookie(key="jwt_token", value=access_token,
+    response.set_cookie(key="jwt_token", 
+                        value=access_token,
                         # domain=domainAPI,
-                          httponly=False,
-                          secure=False,
-                          samesite="lax"
+                          httponly=True,
+                          secure=True,
+                          samesite="None",
+                          max_age=3600,
+                          domain=".joshlepresta.com"  # This allows the cookie to be shared across subdomains
                         )
     return {"access_token": access_token, "token_type": "bearer"}
 

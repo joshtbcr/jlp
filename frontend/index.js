@@ -84,6 +84,7 @@ async function getJwtToken(cedula,password) {
     try {
         const response = await fetch(jwtURL, {
             method: 'POST',
+            credentials: 'include',
             body: credentials 
         });
         if (!response.ok) {
