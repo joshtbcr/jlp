@@ -1,4 +1,5 @@
-from fastapi import FastAPI #, Depends
+from fastapi import FastAPI
+import uvicorn #, Depends
 from app import models
 from app.routers import auth #, crud,  database
 from .routers import usuario, cuenta, movimiento, prestamo
@@ -42,3 +43,4 @@ app.add_middleware(
 @app.get("/")
 def root():
     return {"message": "Welcome to JoshLePresta API."}
+
