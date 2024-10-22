@@ -57,7 +57,6 @@ async function hayTokenValido(cedulaInput){
         return hayTokenValido(cedulaInput);
     }
     else{
-        
         console.log("token: ");
         console.log(token);
         const claims = parseJwt(token);

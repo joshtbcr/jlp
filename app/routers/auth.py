@@ -35,13 +35,13 @@ def authenticate_user(db: Session, cedula: str, password: str):
         return False
     return user
 
-def create_access_token(data: dict, expires_delta: timedelta = None):
+def create_access_token(data: dict):
+    expires_delta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + expires_delta
+
     to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=60)
     to_encode.update({"exp": expire})
+
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
@@ -55,12 +55,17 @@ def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestFo
             detail="Usuario o contraseña incorrecta.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"sub": user.cedula}, expires_delta=access_token_expires)
+    jwtPayload = {
+        "sub": user.cedula,
+        "user_name": user.nombre,
+        "role": user.permiso
+    }
+
+    access_token = create_access_token(data=jwtPayload)
     response.set_cookie(key="jwt_token", 
                         value=access_token,
                         # domain=domainAPI,
-                          httponly=True,
+                        #   httponly=True,
                           secure=True,
                           samesite="None",
                           max_age=5260032, # two months
