@@ -28,8 +28,7 @@ origins = [
     "http://localhost:8080",
     "https://dev.joshlepresta.com",
     "https://joshlepresta.com",
-    "https://www.joshlepresta.com",
-    "https://64d0-170-246-157-55.ngrok-free.app"
+    "https://www.joshlepresta.com"
 ]
 
 app.add_middleware(

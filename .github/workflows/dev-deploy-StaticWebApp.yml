@@ -22,7 +22,7 @@ jobs:
       - name: Load environment variables from .env, Change URL and read change
         run: |
           source cicd.env
-          echo "API_DEV_URL=$API_DEV_URL" >> $GITHUB_ENV          
+          echo "API_LOCAL_DEV_URL=$API_DEV_URL" >> $GITHUB_ENV          
           sed -i 's|http://127.0.0.1|https://'"$API_DEV_URL"'|g' ./frontend/index.js
           cd frontend
           ls -lh
