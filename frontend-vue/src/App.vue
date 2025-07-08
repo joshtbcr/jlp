@@ -51,15 +51,17 @@ async function getJwtToken(cedula: string, password: string) {
     throw error
   }
 }
-
+// tslint:disable-next-line:no-unused-variable
 async function hayTokenValido(cedulaInput: string) {
+  cedulaInput;
   const token = getCookie('jwt_token')
   if (!token) {
     showPasswordModal.value = true
     return false
   } else {
     try {
-      const claims = parseJwt(token)
+      // tslint:disable-next-line:no-unused-variable
+      parseJwt(token)
       // Optionally, check token expiration here
       return true
     } catch {
