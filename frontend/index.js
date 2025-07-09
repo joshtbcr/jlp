@@ -1,11 +1,15 @@
 
 const estadoCuentaPath = "/cuentas/generar-excel/?cedula=";
-const url = "http://127.0.0.1:8000"
+const url = "https://local-dev-api.joshlepresta.com:8000"
 const excelURL = url + estadoCuentaPath;
 
 
 
-
+function search(ele) {
+    if(event.key === 'Enter') {
+        sendData();        
+    }
+}
 
 async function sendData() {
     const cedulaInput = document.getElementById("cedulaInput").value;
@@ -46,12 +50,13 @@ function getCookie(name) {
 async function hayTokenValido(cedulaInput){
     const token = getCookie('jwt_token');
     if ((token === undefined || token === null)) {
+        console.log("token: NO HAY TOKEN");
         var passwordInput = promptForPassword();
         if(!passwordInput) return;
         await getJwtToken(cedulaInput, passwordInput);
+        return hayTokenValido(cedulaInput);
     }
     else{
-        
         console.log("token: ");
         console.log(token);
         const claims = parseJwt(token);
@@ -80,6 +85,7 @@ async function getJwtToken(cedula,password) {
     try {
         const response = await fetch(jwtURL, {
             method: 'POST',
+            credentials: 'include',
             body: credentials 
         });
         if (!response.ok) {

@@ -1,4 +1,5 @@
-from fastapi import FastAPI #, Depends
+from fastapi import FastAPI
+import uvicorn #, Depends
 from app import models
 from app.routers import auth #, crud,  database
 from .routers import usuario, cuenta, movimiento, prestamo
@@ -25,6 +26,10 @@ origins = [
     "null", # Don't leave in prod,  just to allow local files as origins
     "http://localhost",
     "http://localhost:8080",
+    "https://dev.joshlepresta.com",
+    "https://joshlepresta.com",
+    "https://www.joshlepresta.com",
+    "https://localhost:5173"
 ]
 
 app.add_middleware(
@@ -38,3 +43,4 @@ app.add_middleware(
 @app.get("/")
 def root():
     return {"message": "Welcome to JoshLePresta API."}
+

@@ -1,0 +1,5 @@
+Please look at my frontend folder. I have this deployed in an azure SWA.
+
+I want to now use vue3 + Vite + Tailwind CSS. Please make the changes and make sure it is compatible with SWA. The backend will not be function app but my already working Fast API backend hosted somewhere else.
+
+First let's do it locally and then instructions to Deploy
