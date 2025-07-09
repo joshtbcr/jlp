@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Load environment variables from .env, Change URL and read change
+      - name: Load environment variables from cicd.env, Change URL and read change
         run: |
           source cicd.env
           echo "API_LOCAL_DEV_URL=$API_DEV_URL" >> $GITHUB_ENV          
@@ -29,6 +29,12 @@ jobs:
           cat index.js
         env:
           API_DEV_URL: ${{ env.API_DEV_URL }}
+      ### Fix for vue build issues with static web apps
+      - name: Use Node.js
+        uses: actions/setup-node@v4 # Or the latest stable version like v4
+        with:
+          node-version: '20.x' # Change this to 20.x or 22.x
+          cache: 'npm' # Or 'yarn', 'pnpm' depending on your package manager
 
       - name: Build And Deploy
         id: builddeploy
@@ -39,9 +45,9 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "./frontend" # App source code path
+          app_location: "./frontend-vue" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "." # Built app content directory - optional
+          output_location: "dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
