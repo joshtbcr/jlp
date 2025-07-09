@@ -19,6 +19,9 @@ jobs:
         with:
           submodules: true
           lfs: false
+          path: '/frontend-vue'
+          sparse-checkout: 'frontend-vue$repository'
+          sparse-checkout-cone-mode: false
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
