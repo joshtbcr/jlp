@@ -28,7 +28,8 @@ origins = [
     "http://localhost:8080",
     "https://dev.joshlepresta.com",
     "https://joshlepresta.com",
-    "https://www.joshlepresta.com"
+    "https://www.joshlepresta.com",
+    "https://localhost:5173"
 ]
 
 app.add_middleware(
