@@ -19,9 +19,16 @@ jobs:
         with:
           submodules: true
           lfs: false
-          path: '/frontend-vue'
+          path: 'frontend-vue'
           sparse-checkout: 'frontend-vue$repository'
           sparse-checkout-cone-mode: false
+        run: |
+          source cicd.env
+          echo "API_LOCAL_DEV_URL=$API_DEV_URL" >> $GITHUB_ENV          
+          sed -i 's|http://127.0.0.1|https://'"$API_DEV_URL"'|g' ./frontend/index.js
+          cd frontend
+          ls -lh
+          cat index.js
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
