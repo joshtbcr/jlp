@@ -12,6 +12,9 @@
     "bootstrap": "^5.3.7",
     "vue": "^3.5.17"
   },
+  "engines": {
+  "node": "20.x"
+  },
   "devDependencies": {
     "@azure/static-web-apps-cli": "^2.0.6",
     "@vitejs/plugin-vue": "^6.0.0",
