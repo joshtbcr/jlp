@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - frontend/**
+      - frontend-vue/**
       - .github/workflows/dev-deploy-StaticWebApp.yml
 jobs:
   build_and_deploy_job:
