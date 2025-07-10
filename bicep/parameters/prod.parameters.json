@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "rgName": { "value": "jlp-prod-rg" },
+    "location": { "value": "eastus2" },
+    "swaName": { "value": "jlp-prod-swa" },
+    "aspName": { "value": "jlp-prod-asp" },
+    "postgresName": { "value": "jlp-prod-db" },
+    "postgresAdminUser": { "value": "adminuser" },
+    "postgresAdminPassword": { "value": "ReplaceThisPassword" }
+  }
+}
+
+
+az deployment sub create \
+  --template-file rg.bicep \

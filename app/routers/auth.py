@@ -68,7 +68,7 @@ def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestFo
                         #   httponly=True,
                           secure=True,
                           samesite="None",
-                          max_age=5260032, # two months
+                          max_age=5260032, # two months (should we reduce this?)
                           domain=".joshlepresta.com"  # This allows the cookie to be shared across subdomains
                         )
     return {"access_token": access_token, "token_type": "bearer"}
