@@ -1,5 +1,5 @@
-param rgConfig object
 targetScope = 'subscription'
+param rgConfig object
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: rgConfig.name
