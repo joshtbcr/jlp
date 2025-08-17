@@ -15,7 +15,7 @@ on:
     branches:
       - prod
     paths:
-      - frontend/**
+      - frontend-vue/**
       - .github/workflows/prod-deploy-StaticWebApp.yml
 
 jobs:
