@@ -8,7 +8,7 @@ on:
     branches:
       - prod
     paths:
-      - frontend/**
+      - frontend-vue/**
       - .github/workflows/prod-deploy-StaticWebApp.yml
   pull_request:
     types: [opened, synchronize, reopened, closed]
@@ -33,7 +33,7 @@ jobs:
         run: |
           source cicd.env
           echo "API_PROD_URL=$API_PROD_URL" >> $GITHUB_ENV          
-          sed -i 's|http://127.0.0.1|https://'"$API_PROD_URL"'|g' ./frontend-vue/src/App.vue
+          sed -i 's|https://local-dev-api.joshlepresta.com:8000|https://'"$API_PROD_URL"'|g' ./frontend-vue/src/App.vue
           cd frontend
           ls -lh
           cat index.js
