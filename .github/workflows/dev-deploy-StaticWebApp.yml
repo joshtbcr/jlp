@@ -9,6 +9,15 @@ on:
     paths:
       - frontend-vue/**
       - .github/workflows/dev-deploy-StaticWebApp.yml
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Deployment environment'
+        required: true
+        default: 'dev'
+      tag:
+        description: 'Release tag (optional)'
+        required: false
 jobs:
   build_and_deploy_job:
     ###if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')

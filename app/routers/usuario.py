@@ -26,6 +26,18 @@ def create_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)
 
     return nuevo_usuario
 
+
+
+@router.get("/")
+def get_usuario(cedula:str, db: Session = Depends(get_db)):
+    usuarioExistente = usuarioCRUD.get_usuario(db, cedula)
+
+    if not usuarioExistente:
+        raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Usuario con cedula {cedula} no fue encontrado.")
+    
+    return usuarioExistente
+
 @router.get("/{cedula}",response_model=schemas.Usuario)
 def get_usuario(cedula:str | None = None, db: Session = Depends(get_db)):
     usuario = usuarioCRUD.get_usuario(db, cedula)
@@ -35,14 +47,3 @@ def get_usuario(cedula:str | None = None, db: Session = Depends(get_db)):
                             detail=f"Usuario con cedula {cedula} no fue encontrado.")
     
     return usuario
-
-
-@router.get("/",response_model=schemas.Usuario)
-def get_usuario(cedula:str, db: Session = Depends(get_db)):
-    usuarioExistente = usuarioCRUD.get_usuario(db, cedula)
-
-    if not usuarioExistente:
-        raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Usuario con cedula {cedula} no fue encontrado.")
-    
-    return usuarioExistente
